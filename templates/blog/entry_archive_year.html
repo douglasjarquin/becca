@@ -1,0 +1,15 @@
+{% extends "base_blog.html" %}
+
+{% block title %}Blog | {{ year }} | Becca{% endblock %}
+
+{% block content %}
+
+<h2>{{ year }} archive</h2>
+
+<ul>
+{% for date in date_list %}
+    <li><a href="{{ date|date:"m" }}/">{{ date|date:"F" }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

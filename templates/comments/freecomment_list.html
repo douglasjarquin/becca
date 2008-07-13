@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss/comments/" />
+{% endblock %}
+
+{% block title %}RSS | Recent comments | Becca{% endblock %}
+
+{% block content %}
+
+<h2>Recent comments</h2>
+
+<p>{% if has_previous %}<a href="?page={{ previous }}">Previous</a> | {% endif %}
+Page {{ page }} of {{ pages }}
+{% if has_next %} | <a href="?page={{ next }}">Next</a>{% endif %}</p>
+
+{% for comment in object_list %}
+<div class="comment" id="c{{ comment.id }}">
+    <h3><a href="{{ comment.get_absolute_url }}">{{ comment.person_name }} {{ comment.submit_date|date:"F j, Y" }} at {{ comment.submit_date|date:"P" }}</a></h3>
+    {{ comment.comment|escape|urlizetrunc:"40"|linebreaks }}
+</div>
+{% endfor %}
+
+<p>{% if has_previous %}<a href="?page={{ previous }}">Previous</a> | {% endif %}
+Page {{ page }} of {{ pages }}
+{% if has_next %} | <a href="?page={{ next }}">Next</a>{% endif %}</p>
+
+{% endblock %}

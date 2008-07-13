@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %} Thanks | Becca{% endblock %}
+
+{% block content %}
+<h1 class="green">Comment has posted successfully</h1>
+
+{% if object %}
+<p><a href="{{ object.get_absolute_url }}">Return to {{ object.title }}</a></p>
+{% endif %}
+
+{% endblock %}

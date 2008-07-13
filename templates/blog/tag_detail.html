@@ -1,0 +1,12 @@
+{% extends "base_blog.html" %}
+
+{% block title %}Blog | {{ object.name }} | Becca{% endblock %}
+
+{% block content %}
+
+{% for entry in object.get_active_entries %}
+    <h2><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a> / {{ entry.published_on|date:"F j, Y" }}</h2>
+    <p>{{ entry.summary }}</p>
+{% endfor %}
+
+{% endblock %}

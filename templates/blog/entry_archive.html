@@ -1,0 +1,18 @@
+{% extends "base_blog.html" %}
+
+{% block title %}Blog | Becca{% endblock %}
+
+{% block content %}
+
+{% load comments %}
+
+{% for object in latest %}
+{% get_free_comment_count for blog.entry object.id as comment_count %}
+<h2><a href="{{ object.get_absolute_url }}" title="{{ object.summary }}">{{ object.title }}</a></h2>
+
+<div class="article_menu">
+	<b>{{ object.published_on|date:"F j, Y" }}</b> <a href="{{ object.get_absolute_url }}">{{ comment_count }}</a>
+</div>
+{% endfor %}
+
+{% endblock %}

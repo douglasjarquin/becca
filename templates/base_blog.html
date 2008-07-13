@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+{% load blog_tags %}{% get_tag_list %}
+<h1>Tags</h1>
+<ul>
+{% for tag in blog_tags %}
+	{% if tag.slug %}
+	<li><a href="{{ tag.get_absolute_url }}" />{{ tag.name }}</a></li> 
+	{% endif %}
+{% endfor %}
+</ul>
+
+{% endblock %}
+{% block content %}
+	
+{% endblock %}

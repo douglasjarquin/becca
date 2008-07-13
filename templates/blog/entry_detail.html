@@ -1,0 +1,56 @@
+{% extends "base_blog.html" %}
+
+{% block title %}Blog | {{ object.title|escape }} | Becca{% endblock %}
+
+{% block content %}
+
+<h1>{{ object.title }}{% ifequal user.username object.author %}{% endifequal %}</h1> 
+{{ object.body }}
+
+<div class="article_menu">	
+<b>{{ object.body|wordcount }} word{{ object.body|wordcount|pluralize }}
+{% ifequal object.published_on object.modified_on  %}
+	published by <strong>{{ object.get_author_name }}</strong> on {{ object.published_on|date:"F j, Y" }}</b>
+{% else %}
+	revised by <strong>{{ object.get_author_name }}</strong> on {{ object.modified_on|date:"F j, Y" }}</b>
+{% endifequal %}
+
+{% for tag in object.tags.all %}
+     <a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+{% endfor %}
+</div>
+	
+{% if object.is_comments %}
+
+{% load comments %}
+<h2>Comments</h2>
+
+{% get_free_comment_count for blog.entry object.id as comment_count %}
+
+{% ifequal comment_count 0 %}
+    <p>No comments posted yet. I double dare you!</p>
+{% endifequal %}
+
+{% get_free_comment_list for blog.entry object.id as comment_list %}
+
+
+{% for comment in comment_list %}
+
+<div class="comment_{% cycle odd,even %}" id="{{ comment.id }}">
+    <span class="comment_number">{{ forloop.counter }}</span>
+    <p><b>{{ comment.person_name }}</b> on {{ comment.submit_date|date:"F j, Y" }} @ {{ comment.submit_date|date:"P" }}</p>
+    {{ comment.comment|escape|urlizetrunc:40|linebreaks }}
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% if object.get_comments_on %} 
+<h2>Post a comment</h2>
+
+{% free_comment_form for blog.entry object.id %}
+
+{% endif %}
+
+{% endblock %}

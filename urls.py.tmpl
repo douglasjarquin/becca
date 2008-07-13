@@ -1,0 +1,31 @@
+from django.conf import settings # Development only
+from django.conf.urls.defaults import *
+from apps.blog.feeds import BlogEntryFeed
+from sitemaps import BlogSitemap
+from django.contrib.comments.feeds import LatestFreeCommentsFeed
+from django.contrib.comments.models import FreeComment
+
+comments_dict = {
+    'queryset': FreeComment.objects.all(),
+    'paginate_by': 15,
+}
+
+feeds_dict = {
+    'blog': BlogEntryFeed,
+}
+
+sitemaps = {
+    'blog': BlogSitemap,
+}
+
+urlpatterns = patterns('',
+	(r'^$', include('becca.apps.blog.urls')),
+	(r'^admin/', include('django.contrib.admin.urls')),
+    (r'^blog/', include('becca.apps.blog.urls')),
+    (r'^comments/$', 'django.views.generic.list_detail.object_list', comments_dict),
+    (r'^comments/', include('django.contrib.comments.urls.comments')),
+    (r'^rss/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds_dict}),
+    (r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+    # Development only
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+)
